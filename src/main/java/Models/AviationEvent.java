@@ -8,7 +8,7 @@ public class AviationEvent extends DefaultModel {
      * Class constructor
      */
     public AviationEvent() {
-        super("Airport", "id", true);
+        super("AviationEvent", "id", true);
 
         String[] modelProperties = {
                 "id",

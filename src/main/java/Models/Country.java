@@ -10,7 +10,7 @@ public class Country extends DefaultModel {
     public Country() {
         super("Country", "code", true);
 
-        String[] modelProperties = {"code", "name"};
+        String[] modelProperties = {"code", "name", "isoCode3"};
         this.setModelProperties(modelProperties);
     }
 }

@@ -24,6 +24,8 @@ public class DefaultModel {
     //Prefixes and base model prefixes
     private String propertyPrefix = "";
     private String baseModelQuery = "";
+    private String baseModelQueryAll = "";
+    private String baseModelQueryAllCount = "";
 
     //List of properties for an instance of a model
     private Map<String, Object> instanceProperties;
@@ -67,6 +69,12 @@ public class DefaultModel {
             //Get base model query
             this.baseModelQuery = properties.getProperty("model_base_query");
 
+            //Get base model query for all
+            this.baseModelQueryAll = properties.getProperty("model_base_query_all");
+
+            //Get base model query for all (just IDs)
+            this.baseModelQueryAllCount = properties.getProperty("model_base_query_all_id");
+
             //Store property prefix
             this.propertyPrefix = ontologyPrefix + propertyPrefix;
         } catch (IOException e) {
@@ -85,7 +93,7 @@ public class DefaultModel {
         //Set property items for model
         this.modelPropertyItems = new ArrayList();
         for (int index = 0; index < this.modelProperties.length; index++)
-            this.modelPropertyItems.add(this.propertyPrefix + this.modelProperties[index]);
+            this.modelPropertyItems.add(this.modelProperties[index]);
 
     }
 
@@ -96,10 +104,8 @@ public class DefaultModel {
      * @return Value for the key
      */
     public String getProperty(String key) {
-        String propertyPrefix = this.propertyPrefix + key;
-
-        if (this.instanceProperties.containsKey(propertyPrefix))
-            return this.instanceProperties.get(propertyPrefix).toString();
+        if (this.instanceProperties.containsKey(key))
+            return this.instanceProperties.get(key).toString();
         return "";
     }
 
@@ -107,8 +113,11 @@ public class DefaultModel {
      * Search an instance of the model
      *
      * @param id ID to search
+     * @return TRUE if instance has been found
      */
-    public void getInstance(String id) {
+    public Boolean getInstance(String id) {
+        Boolean foundInstance = false;
+
         //Prepare query
         this.queryText = new SparqlQueryTemplate(this.baseModelQuery);
         this.queryText.setAttribute("model", this.modelName);
@@ -130,17 +139,117 @@ public class DefaultModel {
             while (result.hasNext()) {
                 BindingSet bindingSet = result.next();
 
+                //Get property and remove prefix
                 property = bindingSet.getValue("property").stringValue();
+                property = property.replace(this.propertyPrefix, "");
+
+                //Get value
                 value = bindingSet.getValue("value").stringValue();
 
                 //Store property if set in constructor
                 if (this.modelPropertyItems.contains(property))
                     this.instanceProperties.put(property, value);
             }
+
+            foundInstance = true;
         }
 
         //Close the repository connection
         this.repository.closeRepository();
 
+        //Return whether an instance has been found or not
+        return foundInstance;
+    }
+
+    /**
+     * Search all the instances for a model
+     */
+    public Map<String, Map<String, Object>> getAll() {
+        //Prepare query
+        this.queryText = new SparqlQueryTemplate(this.baseModelQueryAll);
+        this.queryText.setAttribute("model", this.modelName);
+        this.queryText.setAttribute("prop_id", this.modelId);
+
+        //Make query
+        String queryString = queryText.getQuery();
+        TupleQueryResult result = this.repository.makeQuery(queryString);
+
+        //Get properties from instance
+        if (result != null) {
+            String property;
+            String value;
+            String instance_id;
+
+            Map<String, Map<String, Object>> allInstances = new HashMap<String, Map<String, Object>>();
+            while (result.hasNext()) {
+                BindingSet bindingSet = result.next();
+
+                //Get instance ID
+                instance_id = bindingSet.getValue("id").stringValue();
+
+                //Create instance with properties
+                if (!allInstances.containsKey(instance_id))
+                    allInstances.put(instance_id, new HashMap<String, Object>());
+
+                //Get property and remove prefix
+                property = bindingSet.getValue("property").stringValue();
+                property = property.replace(this.propertyPrefix, "");
+
+                //Get value
+                value = bindingSet.getValue("value").stringValue();
+
+                //Store property if set in constructor
+                if (this.modelPropertyItems.contains(property))
+                    allInstances.get(instance_id).put(property, value);
+            }
+
+            return allInstances;
+        }
+
+        //Close the repository connection
+        this.repository.closeRepository();
+
+        return null;
+    }
+
+
+    /**
+     * Count results from query
+     *
+     * @param queryTemplate Query template to use
+     * @return Number of items retrieved in query
+     */
+    private int getQueryCount(String queryTemplate) {
+        //Prepare query
+        this.queryText = new SparqlQueryTemplate(queryTemplate);
+        this.queryText.setAttribute("model", this.modelName);
+
+        //Make query
+        String queryString = queryText.getQuery();
+        TupleQueryResult result = this.repository.makeQuery(queryString);
+
+        //Get properties from instance
+        int countValue = 0;
+
+        if (result != null) {
+            while (result.hasNext()) {
+                BindingSet bindingSet = result.next();
+                countValue++;
+            }
+        }
+
+        //Close the repository connection
+        this.repository.closeRepository();
+
+        return countValue;
+    }
+
+    /**
+     * Return count of all instances of a model
+     *
+     * @return Number of instances
+     */
+    public int getAllCount() {
+        return this.getQueryCount(this.baseModelQueryAllCount);
     }
 }
