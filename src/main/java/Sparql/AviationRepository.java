@@ -1,9 +1,8 @@
 package Sparql;
 
-import Project.PropertyReader;
+import General.ConfigPropertyReader;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
 /**
  * Connection to aviation repository
@@ -18,7 +17,7 @@ public class AviationRepository extends RemoteRepositoryEndpoint {
         super();
         try {
             //Create property reader and read endpoint URL
-            PropertyReader properties = new PropertyReader();
+            ConfigPropertyReader properties = new ConfigPropertyReader();
             String sparqlEndpoint = properties.getProperty("aviation_endpoint");
 
             //set URL endpoint to reader

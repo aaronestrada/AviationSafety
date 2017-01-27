@@ -1,4 +1,4 @@
-package Project;
+package General;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,9 +7,9 @@ import java.io.InputStream;
 /**
  * Read config.properties file for project configuration
  */
-public class PropertyReader extends java.util.Properties {
+public class ConfigPropertyReader extends java.util.Properties {
 
-    public PropertyReader() throws FileNotFoundException {
+    public ConfigPropertyReader() throws FileNotFoundException {
         super();
 
         String propFileName = "config.properties";

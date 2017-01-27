@@ -1,0 +1,16 @@
+package Models;
+
+/**
+ * Model for AircraftModel instances
+ */
+public class AircraftModel extends DefaultModel {
+    /**
+     * Class constructor
+     */
+    public AircraftModel() {
+        super("AircraftModel", "id", false);
+
+        String[] modelProperties = {"id", "name", "numberEngines", "builtByAmateur", "icaoCode", "longitude"};
+        this.setModelProperties(modelProperties);
+    }
+}

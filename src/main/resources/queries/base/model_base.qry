@@ -1,0 +1,5 @@
+SELECT ?property ?value WHERE {
+    ?instance a :$model$ .
+    ?instance prop:$prop_id$ $id$ .
+    ?instance ?property ?value .
+}

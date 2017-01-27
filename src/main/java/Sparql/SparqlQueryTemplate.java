@@ -1,5 +1,6 @@
-package Project;
+package Sparql;
 
+import General.ConfigPropertyReader;
 import org.antlr.stringtemplate.StringTemplate;
 import org.apache.commons.io.IOUtils;
 
@@ -9,7 +10,7 @@ import java.io.IOException;
  * Class to read queries from text files and parse them in case they need
  * specific parameters
  */
-public class QueryTemplate {
+public class SparqlQueryTemplate {
     private StringTemplate queryTemplate;
 
     /**
@@ -37,11 +38,12 @@ public class QueryTemplate {
      *
      * @param queryName Name of the query (no extension)
      */
-    public QueryTemplate(String queryName) {
+    public SparqlQueryTemplate(String queryName) {
         try {
-            PropertyReader properties = new PropertyReader();
+            ConfigPropertyReader properties = new ConfigPropertyReader();
             String queryPath = properties.getProperty("queries_path");
             String queryExtension = properties.getProperty("queries_extension");
+            String queryPrefix = properties.getProperty("prefix_base_query");
 
             //Construct relative path for query file
             ClassLoader classLoader = getClass().getClassLoader();
@@ -50,8 +52,12 @@ public class QueryTemplate {
             //Get content from query
             String queryContent = IOUtils.toString(classLoader.getResourceAsStream(relativePath));
 
+            //Get content for prefixes
+            String prefixRelativePath = queryPath + queryPrefix + "." + queryExtension;
+            String prefixContent = IOUtils.toString(classLoader.getResourceAsStream(prefixRelativePath));
+
             // Create String template
-            this.queryTemplate = new StringTemplate(queryContent);
+            this.queryTemplate = new StringTemplate(prefixContent + queryContent);
         } catch (IOException e) {
         }
     }
