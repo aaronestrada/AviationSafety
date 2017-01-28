@@ -185,14 +185,19 @@
             series: {
                 regions: [{
                     values: gdpData,
-                    scale: ['#000', '#000'],
-                    normalizeFunction: 'polynomial'
+                    normalizeFunction: 'linear'
                 }]
             },
+            scaleColors: ['#b6d6ff', '#005ace'],
+            selectedColor: '#c9dfaf',
             backgroundColor: '#eef3f7',
             onLabelShow: function (e, el, code) {
-                el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+                el.text(el.text() + ' (Events - ' + gdpData[code] + ')');
+            },
+            onRegionClick: function (element, code, region) {
+                window.location.href = "/country_events.jsp?code=" + code.toUpperCase();
             }
+
         });
     });
 

@@ -1,6 +1,7 @@
 package Sparql;
 
 
+import org.eclipse.rdf4j.query.BooleanQuery;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
@@ -32,6 +33,7 @@ public class RemoteRepositoryEndpoint {
 
     /**
      * Set repository endpoint
+     *
      * @param sparqlEndpoint URL of the endpoint
      */
     public void setEndpoint(String sparqlEndpoint) {
@@ -54,6 +56,28 @@ public class RemoteRepositoryEndpoint {
             RepositoryConnection repConn = this.repo.getConnection();
             TupleQuery tupleQuery = repConn.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
             TupleQueryResult result = tupleQuery.evaluate();
+            return result;
+        } catch (RepositoryException re) {
+            return null;
+        }
+    }
+
+    /**
+     * Query on repository (boolean queries [ASK])
+     *
+     * @param queryString Query to execute in repository
+     * @return Whether the response was True or False
+     */
+    public Boolean makeBooleanQuery(String queryString) {
+        //Verify if repository has been initialized, otherwise start
+        if (!this.repo.isInitialized())
+            this.repo.initialize();
+
+        try {
+            //Retrieve values from SPARQL query
+            RepositoryConnection repConn = this.repo.getConnection();
+            BooleanQuery booleanQuery = repConn.prepareBooleanQuery(QueryLanguage.SPARQL, queryString);
+            Boolean result = booleanQuery.evaluate();
             return result;
         } catch (RepositoryException re) {
             return null;

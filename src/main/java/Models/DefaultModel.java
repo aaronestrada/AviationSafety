@@ -16,29 +16,30 @@ import java.util.Map;
  */
 public class DefaultModel {
     //Repository to retrieve data
-    private AviationRepository repository;
+    protected AviationRepository repository;
 
     //Query template to read queries
-    private SparqlQueryTemplate queryText;
+    protected SparqlQueryTemplate queryText;
 
     //Prefixes and base model prefixes
-    private String propertyPrefix = "";
-    private String baseModelQuery = "";
-    private String baseModelQueryAll = "";
-    private String baseModelQueryAllCount = "";
+    protected String propertyPrefix = "";
+    protected String resourcesPrefix = "";
+    protected String baseModelQuery = "";
+    protected String baseModelQueryAll = "";
+    protected String baseModelQueryAllCount = "";
 
     //List of properties for an instance of a model
-    private Map<String, Object> instanceProperties;
-    private ArrayList modelPropertyItems;
+    protected Map<String, Object> instanceProperties;
+    protected ArrayList modelPropertyItems;
 
     /**
      * For each data model, these attributes store the name of the model,
      * the ID to retrieve instances and a list of properties to retrieve.
      */
-    private String modelName;
-    private String modelId;
-    private String[] modelProperties;
-    private Boolean useQuotes;
+    protected String modelName;
+    protected String modelId;
+    protected String[] modelProperties;
+    protected Boolean useQuotes;
 
     /**
      * Class constructor
@@ -61,10 +62,12 @@ public class DefaultModel {
         // Get data and properties prefixes
         String ontologyPrefix;
         String propertyPrefix;
+        String resourcesPrefix;
         try {
             ConfigPropertyReader properties = new ConfigPropertyReader();
             ontologyPrefix = properties.getProperty("ontology_prefix");
             propertyPrefix = properties.getProperty("property_prefix");
+            resourcesPrefix = properties.getProperty("resources_prefix");
 
             //Get base model query
             this.baseModelQuery = properties.getProperty("model_base_query");
@@ -77,6 +80,9 @@ public class DefaultModel {
 
             //Store property prefix
             this.propertyPrefix = ontologyPrefix + propertyPrefix;
+
+            //Store resources prefix
+            this.resourcesPrefix = ontologyPrefix + resourcesPrefix;
         } catch (IOException e) {
         }
 
@@ -95,6 +101,15 @@ public class DefaultModel {
         for (int index = 0; index < this.modelProperties.length; index++)
             this.modelPropertyItems.add(this.modelProperties[index]);
 
+    }
+
+    /**
+     * Retrieve list of properties for the model
+     *
+     * @return List of properties
+     */
+    public String[] getModelProperties() {
+        return this.modelProperties;
     }
 
     /**
@@ -159,6 +174,27 @@ public class DefaultModel {
 
         //Return whether an instance has been found or not
         return foundInstance;
+    }
+
+    /**
+     * Given a result and a list of properties, set the properties values to the instance
+     *
+     * @param result       Result of a query
+     * @param propertyList List of properties to save in instance
+     */
+    protected void setInstancePropertiesFromResult(TupleQueryResult result, String[] propertyList) {
+        String property;
+        String value;
+        while (result.hasNext()) {
+            BindingSet bindingSet = result.next();
+            for (int propertyIndex = 0; propertyIndex < propertyList.length; propertyIndex++) {
+                property = propertyList[propertyIndex];
+                if (bindingSet.hasBinding(property)) {
+                    value = bindingSet.getValue(property).stringValue();
+                    this.instanceProperties.put(property, value);
+                }
+            }
+        }
     }
 
     /**

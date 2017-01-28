@@ -1,0 +1,11 @@
+SELECT DISTINCT
+    ?injurySeverityName
+    ?weatherConditionName
+    ?reportStatusName
+WHERE {
+    ?s a :AviationEvent ;
+        prop:id "$id$".
+    OPTIONAL {?s rel:reportedInjurySeverity [prop:description ?injurySeverityName] }.
+    OPTIONAL {?s rel:occurredOnWeatherCondition [prop:description ?weatherConditionName]}.
+    OPTIONAL {?s rel:hasReportStatus [prop:description ?reportStatusName]} .
+}

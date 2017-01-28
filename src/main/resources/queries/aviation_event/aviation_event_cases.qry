@@ -1,0 +1,4 @@
+SELECT ?aviation_case_id WHERE {
+	inst_event:$id$ rel:registeredCase ?aviation_case.
+	?aviation_case prop:id ?aviation_case_id
+}

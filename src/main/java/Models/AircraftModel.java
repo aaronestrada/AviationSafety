@@ -10,7 +10,7 @@ public class AircraftModel extends DefaultModel {
     public AircraftModel() {
         super("AircraftModel", "id", false);
 
-        String[] modelProperties = {"id", "name", "numberEngines", "builtByAmateur", "icaoCode", "longitude"};
+        String[] modelProperties = {"id", "name", "numberEngines", "builtByAmateur"};
         this.setModelProperties(modelProperties);
     }
 }

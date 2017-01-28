@@ -1,0 +1,3 @@
+ASK WHERE {
+	inst_event:$id$ a :AccidentEvent.
+}

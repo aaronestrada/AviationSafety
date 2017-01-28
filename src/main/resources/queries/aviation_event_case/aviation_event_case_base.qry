@@ -1,0 +1,10 @@
+SELECT DISTINCT ?scheduledFlight ?damageDesc ?flightPhaseDesc ?carrierName ?federalRegulationDesc ?flightPurposeDesc WHERE {
+	?s a :AviationEventCase .
+	?s prop:id "$id$" .
+	OPTIONAL {?s prop:scheduledFlight ?scheduledFlight } .
+	OPTIONAL {?s rel:hasDamage [prop:description ?damageDesc]} .
+	OPTIONAL {?s rel:occurredOnFlightPhase [prop:description ?flightPhaseDesc]} .
+	OPTIONAL {?s rel:reportedCarrier [prop:name ?carrierName]} .
+	OPTIONAL {?s rel:occurredOnFederalRegulation [prop:description ?federalRegulationDesc]} .
+	OPTIONAL {?s rel:reportedFlightPurpose [prop:description ?flightPurposeDesc]} .
+}

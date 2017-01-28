@@ -1,0 +1,6 @@
+SELECT ?aircraft_type ?aircraft_id ?registration_number {
+	inst_eventcase:$id$ rel:registeredAircraft ?aircraft .
+	?aircraft a ?aircraft_type .
+	OPTIONAL {?aircraft prop:id ?aircraft_id} .
+	OPTIONAL {?aircraft prop:registrationNumber ?registration_number}.
+}
