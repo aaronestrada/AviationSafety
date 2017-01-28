@@ -29,6 +29,17 @@ public class AviationEvent extends DefaultModel {
                 "injurySeverityName",
                 "weatherConditionName",
                 "reportStatusName",
+                "locationName",
+                "countryNameLocation",
+                "airportId",
+                "airportName",
+                "airportIataCode",
+                "airportIcaoCode",
+                "airportLatitude",
+                "airportLongitude",
+                "airportAltitude",
+                "airportCityName",
+                "airportCountryName",
                 "eventTypeName"
         };
         this.setModelProperties(modelProperties);
@@ -52,7 +63,22 @@ public class AviationEvent extends DefaultModel {
 
             //Get properties from instance
             if (result != null) {
-                String[] propertyList = {"injurySeverityName", "weatherConditionName", "reportStatusName"};
+                String[] propertyList = {
+                        "injurySeverityName",
+                        "weatherConditionName",
+                        "reportStatusName",
+                        "locationName",
+                        "countryNameLocation",
+                        "airportId",
+                        "airportName",
+                        "airportIataCode",
+                        "airportIcaoCode",
+                        "airportLatitude",
+                        "airportLongitude",
+                        "airportAltitude",
+                        "airportCityName",
+                        "airportCountryName"
+                };
                 this.setInstancePropertiesFromResult(result, propertyList);
             }
 

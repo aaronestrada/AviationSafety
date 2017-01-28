@@ -243,7 +243,7 @@
     <!-- http://aviationsafety.unibz.it/property/builtByAmateur -->
 
     <owl:DatatypeProperty rdf:about="http://aviationsafety.unibz.it/property/builtByAmateur">
-        <rdfs:domain rdf:resource="http://aviationsafety.unibz.it/resources/AviationEventCase"/>
+        <rdfs:domain rdf:resource="http://aviationsafety.unibz.it/resources/AircraftModel"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment xml:lang="en">Aircraft is a homebuilt (T/F).</rdfs:comment>
     </owl:DatatypeProperty>
@@ -254,6 +254,7 @@
 
     <owl:DatatypeProperty rdf:about="http://aviationsafety.unibz.it/property/caseId">
         <rdfs:subPropertyOf rdf:resource="http://aviationsafety.unibz.it/property/id"/>
+        <rdfs:domain rdf:resource="http://aviationsafety.unibz.it/resources/AviationEventCase"/>
         <rdfs:comment xml:lang="en">Each accident/incident is assigned a unique case number by the NTSB. This number is used as a reference in all documents referring to the event. The first 3 characters are a letter abbreviation of the NTSB office that filed the report. The next 2 numbers represent the fiscal year in which the accident occurred. The next two letters indicate the investigation category (Major, Limited, etc) and mode (Aviation, Marine, etc). The next three digits indicate the chronological sequence in which the case was created within the given fiscal year. And a final letter (A, B, C, etc) may exist if the event involved multiple aircraft</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -285,6 +286,7 @@
 
     <owl:DatatypeProperty rdf:about="http://aviationsafety.unibz.it/property/eventId">
         <rdfs:subPropertyOf rdf:resource="http://aviationsafety.unibz.it/property/id"/>
+        <rdfs:domain rdf:resource="http://aviationsafety.unibz.it/resources/AviationEvent"/>
         <rdfs:comment xml:lang="en">Each event is assigned a unique 14-character alphanumeric code.</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -601,6 +603,18 @@
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="http://aviationsafety.unibz.it/relation/registeredAircraft"/>
+                <owl:someValuesFrom rdf:resource="http://aviationsafety.unibz.it/resources/Aircraft"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://aviationsafety.unibz.it/relation/registeredAircraft"/>
+                <owl:someValuesFrom rdf:resource="http://aviationsafety.unibz.it/resources/AircraftModel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://aviationsafety.unibz.it/relation/reportedCarrier"/>
                 <owl:someValuesFrom rdf:resource="http://aviationsafety.unibz.it/resources/Carrier"/>
             </owl:Restriction>
@@ -745,6 +759,48 @@
     <!-- http://aviationsafety.unibz.it/resources/WeatherCondition -->
 
     <owl:Class rdf:about="http://aviationsafety.unibz.it/resources/WeatherCondition"/>
+    
+
+
+    <!-- http://www.unibz.it/inf/obdaplugin#RandomClass6677841155 -->
+
+    <owl:Class rdf:about="http://www.unibz.it/inf/obdaplugin#RandomClass6677841155"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Aircraft"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/AircraftCategory"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/AircraftModel"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Airport"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/AviationEvent"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/AviationEventCase"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Carrier"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/City"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Country"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Damage"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Engine"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/FederalRegulation"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/FlightPhase"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/FlightPurpose"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/InjurySeverity"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/InjuryType"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Location"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/Manufacturer"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/ReportStatus"/>
+            <rdf:Description rdf:about="http://aviationsafety.unibz.it/resources/WeatherCondition"/>
+        </owl:members>
+    </rdf:Description>
 </rdf:RDF>
 
 

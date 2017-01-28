@@ -23,7 +23,7 @@ public class AviationEventCase extends DefaultModel {
                 "federalRegulationDesc",
                 "flightPurposeDesc",
                 "Aircraft_registrationNumber",
-                "Aircraft_aircraftModelName",
+                "Aircraft_modelName",
                 "Aircraft_numberEngines",
                 "Aircraft_builtByAmateur",
                 "Aircraft_categoryName",
@@ -49,7 +49,7 @@ public class AviationEventCase extends DefaultModel {
 
             //Get properties from instance
             if (result != null)
-                this.setInstancePropertiesFromResult(result, this.modelProperties);
+                this.setInstancePropertiesFromResult(result, this.getModelProperties());
 
             //Get type of aircraft involved in event
             this.queryText = new SparqlQueryTemplate("aviation_event_case/aviation_event_case_aircraft_type");

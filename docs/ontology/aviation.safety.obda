@@ -80,7 +80,7 @@ target		inst_city:{id} a :City ; prop:id {id} ; prop:name {name}^^rdfs:Literal ;
 source		SELECT * FROM city;
 
 mappingId	map-airport
-target		inst_airport:{id} a :Airport ; prop:id {id} ; prop:name {name}^^rdfs:Literal ; prop:iataCode {iata_code}^^rdfs:Literal ; prop:icaoCode {icao_code}^^rdfs:Literal ; prop:longitude {longitude}^^rdfs:Literal ; prop:altitude {altitude}^^rdfs:Literal . 
+target		inst_airport:{id} a :Airport ; rel:isInCity inst_city:{city_id} ; prop:id {id} ; prop:name {name}^^rdfs:Literal ; prop:iataCode {iata_code}^^rdfs:Literal ; prop:icaoCode {icao_code}^^rdfs:Literal ; prop:latitude {latitude} ; prop:longitude {longitude}^^rdfs:Literal ; prop:altitude {altitude}^^rdfs:Literal . 
 source		SELECT * FROM airport;
 
 mappingId	map-air-carrier
@@ -99,40 +99,50 @@ mappingId	map-registered-aircraft
 target		inst_aircraft:{registration_number} a :Aircraft ; prop:registrationNumber {registration_number}^^rdfs:Literal ; rel:hasModel inst_aircraftmodel:{aircraft_model_id} . 
 source		SELECT * FROM registered_aircraft;
 
-mappingId	map-incidents-1
-target		inst_event:{id} a :IncidentEvent ; prop:eventId {id}^^rdfs:Literal ; prop:date {event_date} ; rel:reportedInjurySeverity inst_injuryseverity:{injury_severity_id} ; rel:occurredIn inst_airport:{airport_id} ; rel:occurredOnWeatherCondition inst_weather:{weather_condition_id} ; prop:latitude {latitude}^^rdfs:Literal ; prop:longitude {longitude}^^rdfs:Literal ; prop:totalFatalInjuries {total_fatal_injuries} ; prop:totalSeriousInjuries {total_serious_injuries} ; prop:totalMinorInjuries {total_minor_injuries} ; prop:totalNoInjuries {total_uninjured} ; rel:hasReportStatus inst_reportstatus:{report_status_id} . 
-source		SELECT * FROM aviation_event WHERE investigation_type_id = 1
-			AND airport_id IS NOT NULL;
+mappingId	map-events
+target		inst_event:{id} a :AviationEvent ; prop:eventId {id}^^rdfs:Literal ; prop:date {event_date} ; prop:latitude {latitude}^^rdfs:Literal ; prop:longitude {longitude}^^rdfs:Literal ; prop:totalFatalInjuries {total_fatal_injuries} ; prop:totalSeriousInjuries {total_serious_injuries} ; prop:totalMinorInjuries {total_minor_injuries} ; prop:totalNoInjuries {total_uninjured} ; rel:hasReportStatus inst_reportstatus:{report_status_id} ; rel:reportedInjurySeverity inst_injuryseverity:{injury_severity_id} ; rel:occurredOnWeatherCondition inst_weather:{weather_condition_id} . 
+source		SELECT * FROM aviation_event;
 
-mappingId	map-incidents-2
-target		inst_event:{id} a :IncidentEvent ; prop:eventId {id}^^rdfs:Literal ; prop:date {event_date} ; rel:reportedInjurySeverity inst_injuryseverity:{injury_severity_id} ; rel:occurredIn inst_airport:{airport_id} ; rel:occurredOnWeatherCondition inst_weather:{weather_condition_id} ; prop:latitude {latitude}^^rdfs:Literal ; prop:longitude {longitude}^^rdfs:Literal ; prop:totalFatalInjuries {total_fatal_injuries} ; prop:totalSeriousInjuries {total_serious_injuries} ; prop:totalMinorInjuries {total_minor_injuries} ; prop:totalNoInjuries {total_uninjured} ; rel:hasReportStatus inst_reportstatus:{report_status_id} . 
-source		SELECT * FROM aviation_event WHERE investigation_type_id = 1
-			AND airport_id IS NULL;
+mappingId	map-events-location-1
+target		inst_event:{id} rel:occurredIn inst_airport:{airport_id} . 
+source		SELECT id, airport_id FROM aviation_event WHERE airport_id IS NOT NULL;
+
+mappingId	map-events-location-2
+target		inst_event:{id} rel:occurredIn inst_location:{location_id} . 
+source		SELECT id, location_id FROM aviation_event WHERE airport_id IS NULL AND location_id IS NOT NULL;
+
+mappingId	map-events-location-3
+target		inst_event:{id} rel:occurredIn inst_country:{country_code} . 
+source		SELECT id, country_code FROM aviation_event WHERE airport_id IS NULL AND location_id IS NULL AND country_code IS NOT NULL ;
+
+mappingId	map-incidents-1
+target		inst_event:{id} a :IncidentEvent . 
+source		SELECT id FROM aviation_event WHERE investigation_type_id = 1;
 
 mappingId	map-accidents-1
-target		inst_event:{id} a :AccidentEvent ; prop:eventId {id}^^rdfs:Literal ; prop:date {event_date} ; rel:reportedInjurySeverity inst_injuryseverity:{injury_severity_id} ; rel:occurredIn inst_airport:{airport_id} ; rel:occurredOnWeatherCondition inst_weather:{weather_condition_id} ; prop:latitude {latitude}^^rdfs:Literal ; prop:longitude {longitude}^^rdfs:Literal ; prop:totalFatalInjuries {total_fatal_injuries} ; prop:totalSeriousInjuries {total_serious_injuries} ; prop:totalMinorInjuries {total_minor_injuries} ; prop:totalNoInjuries {total_uninjured} ; rel:hasReportStatus inst_reportstatus:{report_status_id} . 
-source		SELECT * FROM aviation_event WHERE investigation_type_id = 2
-			AND airport_id IS NOT NULL;
+target		inst_event:{id} a :AccidentEvent . 
+source		SELECT id FROM aviation_event WHERE investigation_type_id = 2;
 
-mappingId	map-accidents-2
-target		inst_event:{id} a :AccidentEvent ; prop:eventId {id}^^rdfs:Literal ; prop:date {event_date} ; rel:reportedInjurySeverity inst_injuryseverity:{injury_severity_id} ; rel:occurredIn inst_airport:{airport_id} ; rel:occurredOnWeatherCondition inst_weather:{weather_condition_id} ; prop:latitude {latitude}^^rdfs:Literal ; prop:longitude {longitude}^^rdfs:Literal ; prop:totalFatalInjuries {total_fatal_injuries} ; prop:totalSeriousInjuries {total_serious_injuries} ; prop:totalMinorInjuries {total_minor_injuries} ; prop:totalNoInjuries {total_uninjured} ; rel:hasReportStatus inst_reportstatus:{report_status_id} . 
-source		SELECT * FROM aviation_event WHERE investigation_type_id = 2
-			AND airport_id IS NULL;
-
-mappingId	map-event-case-1
-target		inst_eventcase:{id} a :AviationEventCase ; prop:caseId {id}^^rdfs:Literal ; rel:registeredOnEvent inst_event:{aviation_event_id} ; rel:registeredAircraft inst_aircraft:{registration_number} ; rel:occurredOnFlightPhase inst:flightPhase/{broad_phase_flight_id} ; rel:reportedFlightPurpose inst_flightpurpose:{flight_purpose_id} ; rel:reportedCarrier inst_carrier:{air_carrier_id} ; prop:scheduledFlight {scheduled} ; rel:occurredOnFederalRegulation inst_federalregulation:{far_desc_id} ; rel:hasDamage inst_damage:{aircraft_damage_id} . 
+mappingId	map-event-case
+target		inst_eventcase:{id} a :AviationEventCase ; prop:caseId {id}^^rdfs:Literal ; rel:registeredOnEvent inst_event:{aviation_event_id} ; rel:occurredOnFlightPhase inst_flightphase:{broad_phase_flight_id} ; rel:reportedFlightPurpose inst_flightpurpose:{flight_purpose_id} ; rel:reportedCarrier inst_carrier:{air_carrier_id} ; prop:scheduledFlight {scheduled} ; rel:occurredOnFederalRegulation inst_federalregulation:{far_desc_id} ; rel:hasDamage inst_damage:{aircraft_damage_id} . 
 source		SELECT * FROM aviation_event_case
 			WHERE registration_number IS NOT NULL;
 
+mappingId	map-event-case-1
+target		inst_eventcase:{id} rel:registeredAircraft inst_aircraft:{registration_number} . 
+source		SELECT id, registration_number FROM aviation_event_case
+			WHERE registration_number IS NOT NULL;
+
 mappingId	map-event-case-2
-target		inst_eventcase:{id} a :AviationEventCase ; prop:caseId {id}^^rdfs:Literal ; rel:registeredOnEvent inst_event:{aviation_event_id} ; rel:registeredAircraft inst_aircraftmodel:{aircraft_model_id} ; rel:occurredOnFlightPhase inst:flightPhase/{broad_phase_flight_id} ; rel:reportedFlightPurpose inst_flightpurpose:{flight_purpose_id} ; rel:reportedCarrier inst_carrier:{air_carrier_id} ; prop:scheduledFlight {scheduled} ; rel:occurredOnFederalRegulation inst_federalregulation:{far_desc_id} ; rel:hasDamage inst_damage:{aircraft_damage_id} . 
-source		SELECT * FROM aviation_event_case
+target		inst_eventcase:{id} rel:registeredAircraft inst_aircraftmodel:{aircraft_model_id} . 
+source		SELECT id, aircraft_model_id
+			FROM aviation_event_case
 			WHERE registration_number IS NULL;
 
 mappingId	map-inverse-event-case
-target		inst_event:{c.aviation_event_id} rel:registeredCase inst_eventcase:{id} . 
-source		SELECT c.id, c.aviation_event_id
-			FROM aviation_event_case c;
+target		inst_event:{aviation_event_id} rel:registeredCase inst_eventcase:{id} . 
+source		SELECT id, aviation_event_id
+			FROM aviation_event_case;
 
 mappingId	map-inverse-manufacturer
 target		inst_manufacturer:{aircraft_manufacturer_id} rel:producesModel inst_aircraftmodel:{id} . 
