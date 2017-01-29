@@ -55,4 +55,5 @@ WHERE {
 			prop:code ?countryCode
 	} $filters$
 }
-LIMIT 100
+ORDER BY ?date
+LIMIT 101 $offset$

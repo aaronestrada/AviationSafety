@@ -23,7 +23,7 @@ public class AviationEvent extends DefaultServlet {
         Models.AviationEvent aviationEvent = new Models.AviationEvent();
 
         //Verify if there is an instance to show in view
-        if (aviationEvent.getInstance(eventId)) {
+        if (aviationEvent.getInstance(eventId) && (aviationEvent.getProperty("eventId") != "")) {
             /**
              * Send list of properties to the view
              */
@@ -37,15 +37,15 @@ public class AviationEvent extends DefaultServlet {
             //Get list of aviation cases for the event
             List<String> aviationCases = aviationEvent.getAviationEventCases(eventId);
 
+            //List of events to send to view
+            Map<String, Map<String, String>> eventCases = new HashMap<String, Map<String, String>>();
+
             if (aviationCases.size() > 0) {
                 //Retrieve information for each aviation case
                 AviationEventCase aviationEventCaseInstance = new AviationEventCase();
 
                 //List of properties for event case
                 String[] eventCaseProperties = aviationEventCaseInstance.getModelProperties();
-
-                //List of events to send to view
-                Map<String, Map<String, String>> eventCases = new HashMap<String, Map<String, String>>();
 
                 //Iterate over each event case to send properties in view
                 String eventCaseProperty;
@@ -64,10 +64,15 @@ public class AviationEvent extends DefaultServlet {
                         eventCases.put(aviationCaseId, eventData);
                     }
                 }
-
-                //Send event cases to view
-                this.setRequestAttribute("eventCases", eventCases);
             }
+
+            //Send event cases to view
+            this.setRequestAttribute("eventCases", eventCases);
+            this.setRequestAttribute("eventCasesCount", eventCases.size());
+            this.setRedirectPage(null);
+        } else {
+            //Value not found, redirect to search
+            this.setRedirectPage("/search.jsp");
         }
     }
 }

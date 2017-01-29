@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="useGoogleMapsScript" value="true" scope="request"/>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
+    ${myId}
     <div class="row">
         <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-plane"></i> Aviation Event</h3>
@@ -110,51 +112,53 @@
             </div>
         </c:if>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <section class="panel">
-                <header class="panel-heading">Details</header>
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Case</th>
-                        <th>Aircraft</th>
-                        <th>Category</th>
-                        <th>Amateur built</th>
-                        <th>Registration No.</th>
-                        <th>Operator</th>
-                        <th>FAR</th>
-                        <th>Flight purpose</th>
-                        <th>Scheduled</th>
-                        <th>Phase</th>
-                        <th>Damage</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="caseItem" items="${eventCases}">
+    <c:if test="${eventCasesCount > 0}">
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="panel">
+                    <header class="panel-heading">Cases</header>
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
-                            <td>${caseItem.key}</td>
-                            <td><c:if
-                                    test="${not empty caseItem.value.Aircraft_manufacturerName}">${caseItem.value.Aircraft_manufacturerName}</c:if><c:if
-                                    test="${not empty caseItem.value.Aircraft_modelName}"> ${caseItem.value.Aircraft_modelName}</c:if>
-                                <c:if test="${not empty caseItem.value.Aircraft_numberEngines}"> [Engines: ${caseItem.value.Aircraft_numberEngines}]</c:if>
-                            </td>
-                            <td>${caseItem.value.Aircraft_categoryName}</td>
-                            <td><c:if test="${caseItem.value.Aircraft_builtByAmateur == \"false\"}">No</c:if><c:if
-                                    test="${caseItem.value.Aircraft_builtByAmateur == \"true\"}">Yes</c:if></td>
-                            <td>${caseItem.value.Aircraft_registrationNumber}</td>
-                            <td>${caseItem.value.carrierName}</td>
-                            <td>${caseItem.value.federalRegulationDesc}</td>
-                            <td>${caseItem.value.flightPurposeDesc}</td>
-                            <td><c:if test="${caseItem.value.scheduledFlight == \"false\"}">No</c:if><c:if
-                                    test="${caseItem.value.scheduledFlight == \"true\"}">Yes</c:if></td>
-                            <td>${caseItem.value.flightPhaseDesc}</td>
-                            <td>${caseItem.value.damageDesc}</td>
+                            <th>Case</th>
+                            <th>Aircraft</th>
+                            <th>Category</th>
+                            <th>Amateur built</th>
+                            <th>Registration No.</th>
+                            <th>Operator</th>
+                            <th>FAR</th>
+                            <th>Flight purpose</th>
+                            <th>Scheduled</th>
+                            <th>Phase</th>
+                            <th>Damage</th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </section>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="caseItem" items="${eventCases}">
+                            <tr>
+                                <td>${caseItem.key}</td>
+                                <td><c:if
+                                        test="${not empty caseItem.value.Aircraft_manufacturerName}">${caseItem.value.Aircraft_manufacturerName}</c:if><c:if
+                                        test="${not empty caseItem.value.Aircraft_modelName}"> ${caseItem.value.Aircraft_modelName}</c:if>
+                                    <c:if test="${not empty caseItem.value.Aircraft_numberEngines}"> [Engines: ${caseItem.value.Aircraft_numberEngines}]</c:if>
+                                </td>
+                                <td>${caseItem.value.Aircraft_categoryName}</td>
+                                <td><c:if test="${caseItem.value.Aircraft_builtByAmateur == \"false\"}">No</c:if><c:if
+                                        test="${caseItem.value.Aircraft_builtByAmateur == \"true\"}">Yes</c:if></td>
+                                <td>${caseItem.value.Aircraft_registrationNumber}</td>
+                                <td>${caseItem.value.carrierName}</td>
+                                <td>${caseItem.value.federalRegulationDesc}</td>
+                                <td>${caseItem.value.flightPurposeDesc}</td>
+                                <td><c:if test="${caseItem.value.scheduledFlight == \"false\"}">No</c:if><c:if
+                                        test="${caseItem.value.scheduledFlight == \"true\"}">Yes</c:if></td>
+                                <td>${caseItem.value.flightPhaseDesc}</td>
+                                <td>${caseItem.value.damageDesc}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
         </div>
-    </div>
+    </c:if>
 </t:layout>

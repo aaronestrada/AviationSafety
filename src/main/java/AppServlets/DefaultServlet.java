@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet default class.
  * This class is used for all the servlets in the application, controlling the response calls
  * and the request parameters to the views.
- *
+ * <p>
  * Views are stored in WEB-INF/views folder.
  */
 public class DefaultServlet extends HttpServlet {
@@ -26,6 +26,18 @@ public class DefaultServlet extends HttpServlet {
 
     //Request list will be managed using a map that will be sent before doing the request to the view
     private Map<String, Object> requestAttributes;
+
+    //Redirect page to go after processing a servlet
+    private String redirectPage;
+
+    /**
+     * Set redirect page to process before launching JSP
+     *
+     * @param redirectPage Redirect URL
+     */
+    public void setRedirectPage(String redirectPage) {
+        this.redirectPage = redirectPage;
+    }
 
     /**
      * Class constructor
@@ -51,6 +63,7 @@ public class DefaultServlet extends HttpServlet {
      */
     public void initServlet() {
         this.requestAttributes = new HashMap<String, Object>();
+        this.redirectPage = null;
     }
 
     /**
@@ -89,11 +102,15 @@ public class DefaultServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.processServlet(request);
 
-        //Send all attributes from list to request
-        for (Map.Entry<String, Object> e : this.requestAttributes.entrySet())
-            request.setAttribute(e.getKey(), e.getValue());
+        if (this.redirectPage != null) {
+            response.sendRedirect(this.redirectPage);
+        } else {
+            //Send all attributes from list to request
+            for (Map.Entry<String, Object> e : this.requestAttributes.entrySet())
+                request.setAttribute(e.getKey(), e.getValue());
 
-        request.getRequestDispatcher(this.jspView).forward(request, response);
+            request.getRequestDispatcher(this.jspView).forward(request, response);
+        }
     }
 
     /**

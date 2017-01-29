@@ -1,4 +1,5 @@
 <%@tag description="Simple Wrapper Tag" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,7 +156,9 @@
     });
 
 </script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmEv8F0SFC-yM-6PJboyGo3292h_VkhEU&callback=initMap"></script>
+<c:if test="${not empty useGoogleMapsScript}">
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmEv8F0SFC-yM-6PJboyGo3292h_VkhEU&callback=initMap"></script>
+</c:if>
 </body>
 </html>

@@ -21,18 +21,20 @@
                         <div class="form-group">
                             <label class="sr-only" for="country">Country</label>
                             <select class="form-control" name="country" id="country">
-                                <option value="">Country</option>
+                                <option value="">- Country -</option>
                                 <c:forEach var="countryItem" items="${countryList}">
-                                    <option value="${countryItem.key}"<c:if test="${selectedCountryCode == countryItem.key}"> selected</c:if>>${countryItem.value}</option>
+                                    <option value="${countryItem.key}"<c:if
+                                            test="${selectedCountryCode == countryItem.key}"> selected</c:if>>${countryItem.value}</option>
                                 </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="country">Injury severity</label>
                             <select class="form-control" name="injury_severity" id="injury_severity">
-                                <option value="">Injury severity</option>
+                                <option value="">- Injury severity -</option>
                                 <c:forEach var="injuryItem" items="${injuryList}">
-                                    <option value="${injuryItem.key}"<c:if test="${selectedInjurySeverity == injuryItem.key}"> selected</c:if>>${injuryItem.value}</option>
+                                    <option value="${injuryItem.key}"<c:if
+                                            test="${selectedInjurySeverity == injuryItem.key}"> selected</c:if>>${injuryItem.value}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -44,8 +46,24 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
+            <div class="btn-row">
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <c:if test="${previousPage > 0}">
+                            <a href="/search.jsp?page=${previousPage}<c:if test="${not empty selectedCountryCode}">&country=${selectedCountryCode}</c:if><c:if test="${not empty selectedInjurySeverity}">&injury_type=${selectedInjurySeverity}</c:if>"
+                               class="btn btn-info">Previous page</a>
+                        </c:if>
+                        <c:if test="${nextPage > 0}">
+                            <a href="/search.jsp?page=${nextPage}<c:if test="${not empty selectedCountryCode}">&country=${selectedCountryCode}</c:if><c:if test="${not empty selectedInjurySeverity}">&injury_type=${selectedInjurySeverity}</c:if>"
+                               class="btn btn-success">Next page</a>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
             <section class="panel">
-                <header class="panel-heading">Events</header>
+                <header class="panel-heading">Events<c:if test="${eventListCount > 0}"> - Page ${currentPage} <span style="font-style: italic">(Displaying ${eventListCount} results)</c:if></span></header>
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -58,19 +76,42 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="eventItem" items="${eventList}">
+                    <c:if test="${eventListCount == 0}">
                         <tr>
-                            <td><a href="/aviationevent.jsp?id=${eventItem.key}">${eventItem.key}</a></td>
-                            <td>${eventItem.value.date}</td>
-                            <td>${eventItem.value.finLocationName}</td>
-                            <td>${eventItem.value.eventType}</td>
-                            <td>${eventItem.value.injurySeverityName}</td>
-                            <td>${eventItem.value.caseCount}</td>
+                            <td colspan="6">No results found.</td>
                         </tr>
-                    </c:forEach>
+                    </c:if>
+                    <c:if test="${eventListCount > 0}">
+                        <c:forEach var="eventItem" items="${eventList}">
+                            <tr>
+                                <td><a href="/aviationevent.jsp?id=${eventItem.key}">${eventItem.key}</a></td>
+                                <td>${eventItem.value.date}</td>
+                                <td>${eventItem.value.finLocationName}</td>
+                                <td>${eventItem.value.eventType}</td>
+                                <td>${eventItem.value.injurySeverityName}</td>
+                                <td>${eventItem.value.caseCount}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
                     </tbody>
                 </table>
             </section>
+        </div>
+        <div class="col-sm-12">
+            <div class="btn-row">
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <c:if test="${previousPage > 0}">
+                            <a href="/search.jsp?page=${previousPage}<c:if test="${not empty selectedCountryCode}">&country=${selectedCountryCode}</c:if><c:if test="${not empty selectedInjurySeverity}">&injury_type=${selectedInjurySeverity}</c:if>"
+                               class="btn btn-info">Previous page</a>
+                        </c:if>
+                        <c:if test="${nextPage > 0}">
+                            <a href="/search.jsp?page=${nextPage}<c:if test="${not empty selectedCountryCode}">&country=${selectedCountryCode}</c:if><c:if test="${not empty selectedInjurySeverity}">&injury_type=${selectedInjurySeverity}</c:if>"
+                               class="btn btn-success">Next page</a>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </t:layout>

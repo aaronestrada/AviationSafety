@@ -15,18 +15,22 @@ Folder structure
 ---
 ```
 /docs
-    /ontology           Ontology files (OWL and OBDA)
-    /sql                Dump files for database
+    /ontology                           Ontology files (OWL and OBDA)
+    /sql                                Dump files for database
 /src
     /main
-        /java           Application classes
-        /resources      Resources and configuration for the application
-            /queries    Query templates
-                /base   Query templates for DefaultModel class            
+        /java                           Application classes
+        /resources                      Resources and configuration for the application
+            /queries                    Query templates for all models. All the queries are organized
+                                        in different folders, according to the model they are used to
+                /base                   Query templates for DefaultModel class (generic queries)     
+                /filters                Query templates with filters to include in searches
+            
+            config.example.properties   Example for application configuration
 /web
-    /WEB-INF            Web application content
-        /tags           Layouts for application
-        /views          Views used by servlets in the application classes
+    /WEB-INF                            Web application content
+        /tags                           Layouts for application
+        /views                          Views used by servlets in the application classes
 ```
 
 

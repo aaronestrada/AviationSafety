@@ -21,6 +21,7 @@ public class AviationEvent extends DefaultModel {
 
         String[] modelProperties = {
                 "id",
+                "eventId",
                 "date",
                 "latitude",
                 "longitude",
@@ -206,7 +207,8 @@ public class AviationEvent extends DefaultModel {
      *
      * @TODO: For the moment, the only filter that can be applied is country. Next version will be complete.
      */
-    public Map<String, Map<String, String>> searchAviationEvent(String countryCode, String injurySeverity) {
+    public Object[] searchAviationEvent(String countryCode, String injurySeverity, int currentPage) {
+        int resultCount = 0;
         this.queryText = new SparqlQueryTemplate("aviation_event/aviation_event_all");
 
         String filters = "";
@@ -222,7 +224,12 @@ public class AviationEvent extends DefaultModel {
             filters += injuryFilterCountry.getQuery();
         }
 
+        String offsetValue = "";
+        if (currentPage > 1)
+            offsetValue = "OFFSET " + (currentPage - 1) * 100;
+
         this.queryText.setAttribute("filters", filters);
+        this.queryText.setAttribute("offset", offsetValue);
 
         TupleQueryResult result = this.repository.makeQuery(queryText.getQuery());
 
@@ -258,7 +265,11 @@ public class AviationEvent extends DefaultModel {
             String value;
             String property;
             String eventId;
-            while (result.hasNext()) {
+
+            //Show maximum 100 results
+            while (result.hasNext() && resultCount < 100) {
+                resultCount++;
+
                 Map<String, String> eventItem = new HashMap<>();
                 BindingSet bindingSet = result.next();
 
@@ -306,11 +317,15 @@ public class AviationEvent extends DefaultModel {
                 //Store tuple in list of events
                 eventList.put(bindingSet.getValue("eventId").stringValue(), eventItem);
             }
+
+            if (result.hasNext())
+                resultCount++;
         }
 
         //Close the repository connection
         this.repository.closeRepository();
 
-        return eventList;
+        Object[] returnItems = {eventList, resultCount};
+        return returnItems;
     }
 }
