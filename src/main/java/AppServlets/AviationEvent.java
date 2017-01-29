@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Servlet implementation class Index
+ * Servlet implementation to view information of aviation event
  */
 @WebServlet("/aviationevent.jsp")
 public class AviationEvent extends DefaultServlet {
@@ -33,28 +33,6 @@ public class AviationEvent extends DefaultServlet {
                 propertyName = eventProperties[propertyIndex];
                 this.setRequestAttribute(propertyName, aviationEvent.getProperty(propertyName));
             }
-
-            //Verify chosen location for the event
-            String locationLatitude = aviationEvent.getProperty("latitude");
-            String locationLongitude = aviationEvent.getProperty("longitude");
-
-            String locationName = "";
-            if (aviationEvent.getProperty("airportId") != "") {
-                locationName = aviationEvent.getProperty("airportName") +
-                        " [" + aviationEvent.getProperty("airportCityName") +
-                        ", " + aviationEvent.getProperty("airportCountryName") + "]";
-                locationLatitude = aviationEvent.getProperty("airportLatitude");
-                locationLongitude = aviationEvent.getProperty("airportLongitude");
-            } else if (aviationEvent.getProperty("locationName") != "") {
-                locationName = aviationEvent.getProperty("locationName");
-            } else if (aviationEvent.getProperty("countryName") != "") {
-                locationName = aviationEvent.getProperty("countryName");
-            }
-
-            //Send location parameters to view
-            this.setRequestAttribute("finLocationName", locationName);
-            this.setRequestAttribute("finLocationLongitude", locationLongitude);
-            this.setRequestAttribute("finLocationLatitude", locationLatitude);
 
             //Get list of aviation cases for the event
             List<String> aviationCases = aviationEvent.getAviationEventCases(eventId);

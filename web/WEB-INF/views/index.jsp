@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <div class="info-box blue-bg">
-                <i class="fa fa-cloud-download"></i>
+                <i class="fa fa-database"></i>
                 <div class="count">78.108</div>
                 <div class="title">Aviation Events</div>
             </div><!--/.info-box-->
@@ -22,7 +22,7 @@
 
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <div class="info-box brown-bg">
-                <i class="fa fa-shopping-cart"></i>
+                <i class="fa fa-folder"></i>
                 <div class="count">79.258</div>
                 <div class="title">Event Cases</div>
             </div><!--/.info-box-->
@@ -30,7 +30,7 @@
 
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <div class="info-box dark-bg">
-                <i class="fa fa-thumbs-o-up"></i>
+                <i class="fa fa-plane"></i>
                 <div class="count">${aircraftModelCount}</div>
                 <div class="title">Aircraft Models</div>
             </div><!--/.info-box-->
@@ -46,11 +46,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h2><i class="fa fa-map-marker red"></i><strong>Countries</strong></h2>
-                    <div class="panel-actions">
-                        <a href="#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
-                        <a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-                        <a href="#" class="btn-close"><i class="fa fa-times"></i></a>
-                    </div>
                 </div>
                 <div class="panel-body-map">
                     <div id="map" style="height:380px;"></div>
@@ -68,11 +63,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h2><i class="fa fa-flag-o red"></i><strong>Events by country</strong></h2>
-                    <div class="panel-actions">
-                        <a href="#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
-                        <a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-                        <a href="#" class="btn-close"><i class="fa fa-times"></i></a>
-                    </div>
                 </div>
                 <div class="panel-body">
                     <table class="table bootstrap-datatable countries">
@@ -85,55 +75,55 @@
                         <tbody>
                         <tr>
                             <td>United States</td>
-                            <td><a href="/country_events.jsp?code=US">73.629</a></td>
+                            <td><a href="/search.jsp?country=US">73.629</a></td>
                         </tr>
                         <tr>
                             <td>Canada</td>
-                            <td><a href="/country_events.jsp?code=CA">248</a></td>
+                            <td><a href="/search.jsp?country=CA">248</a></td>
                         </tr>
                         <tr>
                             <td>Brazil</td>
-                            <td><a href="/country_events.jsp?code=BR">216</a></td>
+                            <td><a href="/search.jsp?country=BR">216</a></td>
                         </tr>
                         <tr>
                             <td>United Kingdom</td>
-                            <td><a href="/country_events.jsp?code=GB">208</a></td>
+                            <td><a href="/search.jsp?country=GB">208</a></td>
                         </tr>
                         <tr>
                             <td>Mexico</td>
-                            <td><a href="/country_events.jsp?code=MX">208</a></td>
+                            <td><a href="/search.jsp?country=MX">208</a></td>
                         </tr>
                         <tr>
                             <td>Australia</td>
-                            <td><a href="/country_events.jsp?code=AU">195</a></td>
+                            <td><a href="/search.jsp?country=AU">195</a></td>
                         </tr>
                         <tr>
                             <td>Bahamas</td>
-                            <td><a href="/country_events.jsp?code=BS">190</a></td>
+                            <td><a href="/search.jsp?country=BS">190</a></td>
                         </tr>
                         <tr>
                             <td>France</td>
-                            <td><a href="/country_events.jsp?code=FR">162</a></td>
+                            <td><a href="/search.jsp?country=FR">162</a></td>
                         </tr>
                         <tr>
                             <td>Germany</td>
-                            <td><a href="/country_events.jsp?code=DE">151</a></td>
+                            <td><a href="/search.jsp?country=DE">151</a></td>
                         </tr>
                         <tr>
                             <td>Colombia</td>
-                            <td><a href="/country_events.jsp?code=CO">132</a></td>
+                            <td><a href="/search.jsp?country=CO">132</a></td>
                         </tr>
                         <tr>
                             <td>Spain</td>
-                            <td><a href="/country_events.jsp?code=ES">98</a></td>
+                            <td><a href="/search.jsp?country=ES">98</a></td>
                         </tr>
                         <tr>
                             <td>Venezuela</td>
-                            <td><a href="/country_events.jsp?code=VE">88</a></td>
+                            <td><a href="/search.jsp?country=VE">88</a></td>
                         </tr>
                         <tr>
                             <td>Italy</td>
-                            <td><a href="/country_events.jsp?code=IT">87</a></td>
+                            <td><a href="/search.jsp?country=IT">87</a></td>
                         </tr>
                         </tbody>
                     </table>

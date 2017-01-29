@@ -39,6 +39,26 @@ public class SparqlQueryTemplate {
      * @param queryName Name of the query (no extension)
      */
     public SparqlQueryTemplate(String queryName) {
+        this.initQueryTemplate(queryName, true);
+    }
+
+    /**
+     * Class constructor
+     *
+     * @param queryName Name of the query (no extension)
+     * @param usePrefix If prefix are needed to read query
+     */
+    public SparqlQueryTemplate(String queryName, Boolean usePrefix) {
+        this.initQueryTemplate(queryName, usePrefix);
+    }
+
+    /**
+     * Initialize query template
+     *
+     * @param queryName Name of the query (no extension)
+     * @param usePrefix If prefix are needed to read query
+     */
+    private void initQueryTemplate(String queryName, Boolean usePrefix) {
         try {
             ConfigPropertyReader properties = new ConfigPropertyReader();
             String queryPath = properties.getProperty("queries_path");
@@ -53,8 +73,11 @@ public class SparqlQueryTemplate {
             String queryContent = IOUtils.toString(classLoader.getResourceAsStream(relativePath));
 
             //Get content for prefixes
-            String prefixRelativePath = queryPath + queryPrefix + "." + queryExtension;
-            String prefixContent = IOUtils.toString(classLoader.getResourceAsStream(prefixRelativePath));
+            String prefixContent = "";
+            if (usePrefix) {
+                String prefixRelativePath = queryPath + queryPrefix + "." + queryExtension;
+                prefixContent = IOUtils.toString(classLoader.getResourceAsStream(prefixRelativePath));
+            }
 
             // Create String template
             this.queryTemplate = new StringTemplate(prefixContent + queryContent);

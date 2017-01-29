@@ -1,0 +1,1 @@
+. FILTER(?injurySeverityId = $injury$ || !BOUND(?injurySeverityId))

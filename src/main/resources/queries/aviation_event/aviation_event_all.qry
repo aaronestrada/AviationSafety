@@ -1,0 +1,58 @@
+SELECT DISTINCT
+	?eventId
+	?date
+	?totalNoInjuries
+	?totalSeriousInjuries
+	?totalMinorInjuries
+	?totalFatalInjuries
+	?injurySeverityName
+    ?weatherConditionName
+    ?reportStatusName
+    ?locationName
+    ?countryNameLocation
+	?countryCode
+    ?airportId
+	?airportName
+	?airportIataCode
+	?airportIcaoCode
+	?airportLatitude
+	?airportLongitude
+	?airportAltitude
+	?airportCityName
+	?airportCountryName
+	?airportCountryCode
+WHERE {
+	?s a :AviationEvent ;
+		prop:id ?eventId ;
+		prop:totalNoInjuries ?totalNoInjuries;
+		prop:totalSeriousInjuries ?totalSeriousInjuries;
+		prop:totalMinorInjuries ?totalMinorInjuries;
+		prop:totalFatalInjuries ?totalFatalInjuries.
+	OPTIONAL {?s prop:date ?date} .
+	OPTIONAL {?s rel:reportedInjurySeverity [prop:description ?injurySeverityName; prop:id ?injurySeverityId] }.
+	OPTIONAL {?s rel:occurredOnWeatherCondition [prop:description ?weatherConditionName]}.
+	OPTIONAL {?s rel:hasReportStatus [prop:description ?reportStatusName]} .
+	OPTIONAL {?s rel:occurredIn ?location . ?location a :Location ; prop:name ?locationName} .
+	OPTIONAL {?s rel:occurredIn ?airport .
+		?airport a :Airport .
+		OPTIONAL {
+			?airport prop:id ?airportId;
+				prop:name ?airportName;
+				prop:iataCode ?airportIataCode;
+				prop:icaoCode ?airportIcaoCode ;
+				prop:latitude ?airportLatitude;
+				prop:longitude ?airportLongitude;
+				prop:altitude ?airportAltitude;
+				rel:isInCity ?airportCity.
+			?airportCity prop:name ?airportCityName;
+				rel:isInCountry ?airportCountry .
+			?airportCountry prop:name ?airportCountryName;
+				 	prop:code ?airportCountryCode
+		} .
+	} .
+	OPTIONAL {?s rel:occurredIn ?country . ?country a :Country ;
+			prop:name ?countryNameLocation;
+			prop:code ?countryCode
+	} $filters$
+}
+LIMIT 100

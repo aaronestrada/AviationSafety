@@ -56,7 +56,6 @@ public class AviationEventCase extends DefaultModel {
             this.queryText.setAttribute("id", id);
             TupleQueryResult aircraftResult = this.repository.makeQuery(queryText.getQuery());
 
-            String aircraftType = "";
             String aircraftId = "";
             String registrationNumber = "";
             if (aircraftResult != null) {

@@ -48,8 +48,10 @@ prefix_base_query=base/prefix_base
 # Base query for instances
 model_base_query=base/model_base
 model_base_query_all=base/model_base_all
+model_base_query_all_id=base/model_base_all_id
 
 # Ontology prefixes
 ontology_prefix=http://aviationsafety.unibz.it/
 property_prefix=property/
+resources_prefix=resources/
 ```

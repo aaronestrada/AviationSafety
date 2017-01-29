@@ -3,10 +3,20 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
     <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa-plane"></i> Aviation Event</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index.jsp">Home</a></li>
+                <li><i class="fa fa-database"></i><a href="/search.jsp">Events</a></li>
+                <li><i class="fa fa-folder"></i>${eventTypeName} No. ${id}</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-<c:if test="${empty finLocationName}">12</c:if><c:if test="${not empty finLocationName}">7</c:if>">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2><strong>Aviation Event Information</strong></h2>
+                    <h2><strong>General Information</strong></h2>
                 </div>
                 <div class="panel-body bio-graph-info">
                     <h1><b>${eventTypeName}</b> No. ${id}</h1>

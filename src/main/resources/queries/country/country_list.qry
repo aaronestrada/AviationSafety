@@ -1,0 +1,5 @@
+SELECT DISTINCT ?code ?name WHERE {
+    ?country a :Country ;
+        prop:code ?code;
+        prop:name ?name
+} ORDER BY ?name

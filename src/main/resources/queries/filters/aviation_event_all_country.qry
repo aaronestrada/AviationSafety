@@ -1,0 +1,1 @@
+. FILTER(?airportCountryCode = "$country$" || ?countryCode = "$country$")

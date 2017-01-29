@@ -1,0 +1,5 @@
+SELECT DISTINCT ?id ?description WHERE {
+    ?injury a :InjurySeverity ;
+	prop:id ?id ;
+	prop:description ?description .
+} ORDER BY ?description
