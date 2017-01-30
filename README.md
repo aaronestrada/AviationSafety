@@ -16,6 +16,7 @@ Folder structure
 ```
 /docs
     /ontology                           Ontology files (OWL and OBDA)
+    /orm-schema                         ORM schema for aviation data
     /sql                                Dump files for database
 /src
     /main
